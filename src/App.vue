@@ -1,19 +1,26 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="window">
+      <ProgressBar
+        :max="108"
+        :threshold="80"
+        :value="35"
+        text="Ещё продать на завтра"
+        unit="ч"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProgressBar from "./components/ProgressBar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ProgressBar,
+  },
+};
 </script>
 
 <style>
@@ -24,5 +31,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+body {
+  background-color: #3e4b5c;
+}
+
+.window {
+  width: 500px;
+  height: 500px;
 }
 </style>
