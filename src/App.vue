@@ -4,11 +4,13 @@
       <ProgressBar
         :max="108"
         :threshold="80"
-        :value="35"
+        :value="value"
         text="Ещё продать на завтра"
         unit="ч"
       />
     </div>
+    <input type="number" v-model.number="newValue" />
+    <button @click="value = newValue">Установить значение:</button>
   </div>
 </template>
 
@@ -17,6 +19,12 @@ import ProgressBar from "./components/ProgressBar.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      value: 35,
+      newValue: 35
+    };
+  },
   components: {
     ProgressBar,
   },

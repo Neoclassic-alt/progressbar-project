@@ -221,14 +221,14 @@
       </foreignObject>
       <!-- формулы подобраны методом научного тыка на основе знаний тригонометрии -->
       <circle
-        :cx="Math.cos((value / max) * 2 * Math.PI - 1.4) * 100 + 250"
-        :cy="Math.sin((value / max) * 2 * Math.PI - 1.4) * 100 + 250"
+        :cx="Math.cos((animatedValue / max) * 2 * Math.PI - 1.4) * 100 + 250"
+        :cy="Math.sin((animatedValue / max) * 2 * Math.PI - 1.4) * 100 + 250"
         r="14.5"
         fill="#3e4b5c"
       />
       <text
-        :x="Math.cos((value / max) * 2 * Math.PI - 1.4) * 100 + 250"
-        :y="Math.sin((value / max) * 2 * Math.PI - 1.4) * 100 + 250"
+        :x="Math.cos((animatedValue / max) * 2 * Math.PI - 1.4) * 100 + 250"
+        :y="Math.sin((animatedValue / max) * 2 * Math.PI - 1.4) * 100 + 250"
         fill="#778aa6"
         class="orange-text"
         :class="{ 'text-complete': value >= threshold }"
@@ -245,6 +245,11 @@
 <script>
 export default {
   name: "HelloWorld",
+  data() {
+    return {
+      animatedValue: this.value,
+    };
+  },
   props: {
     max: Number,
     threshold: Number,
@@ -255,6 +260,25 @@ export default {
   computed: {
     maxDashArray: () => {
       return 2 * Math.PI * 100;
+    },
+  },
+  watch: {
+    value(newValue, oldValue) {
+      // обновление раз 50 раз в секунду = 20 мс
+      const s = 0.8;
+      const freq = 60;
+      const minChange = (newValue - oldValue) / (freq * s);
+      const timerId = setInterval(() => {
+        this.animatedValue += minChange;
+        if (newValue > oldValue && this.animatedValue >= newValue) {
+          clearInterval(timerId);
+          this.animatedValue = Math.floor(this.animatedValue);
+        }
+        if (newValue < oldValue && this.animatedValue <= newValue) {
+          clearInterval(timerId);
+          this.animatedValue = Math.floor(this.animatedValue);
+        }
+      }, 1000 / freq);
     },
   },
 };
